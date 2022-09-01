@@ -13,6 +13,7 @@ class App extends React.Component {
     super();
     this.state = {
       userName: '',
+      artistName: '',
       isDisabled: true,
       isLoading: false,
     };
@@ -27,7 +28,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { userName, isDisabled, isLoading } = this.state;
+    const { userName, isDisabled, isLoading, artistName } = this.state;
     return (
       <div>
         <p>TrybeTunes</p>
@@ -35,7 +36,14 @@ class App extends React.Component {
           <Route
             exact
             path="/search"
-            render={ () => <Search onInputChange={ this.onInputChange } /> }
+            render={ (props) => (
+              <Search
+                { ...props }
+                artistName={ artistName }
+                isDisabled={ isDisabled }
+                onInputChange={ this.onInputChange }
+              />
+            ) }
           />
           <Route exact path="/favorites" component={ Favorites } />
           <Route exact path="/profile" component={ Profile } />
