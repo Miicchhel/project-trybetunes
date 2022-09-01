@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropType from 'prop-types';
 import Header from '../components/Header';
 import MusicCard from '../components/MusicCard';
 import getMusics from '../services/musicsAPI';
@@ -12,7 +13,7 @@ export default class Album extends Component {
   }
 
   componentDidMount() {
-    const { match: { params : { id } } } = this.props;
+    const { match: { params: { id } } } = this.props;
     this.fetchGetMusics(id);
   }
 
@@ -45,3 +46,11 @@ export default class Album extends Component {
     );
   }
 }
+
+Album.propTypes = {
+  math: PropType.shape({
+    params: PropType.shape({
+      id: PropType.string,
+    }),
+  }),
+}.isRequired;
