@@ -1,16 +1,33 @@
 import React, { Component } from 'react';
-import PropType from 'prop-types';
+// import PropType from 'prop-types';
 import Header from '../components/Header';
 
 export default class Search extends Component {
-  btnClicked = () => {
+  constructor() {
+    super();
 
+    this.state = {
+      artistName: '',
+      isDisabled: true,
+    };
+  }
+
+  onInputChange = ({ target }) => {
+    const { name, value } = target;
+    this.setState({
+      [name]: value,
+      isDisabled: value.length < 2,
+    });
+  };
+
+  btnClicked = () => {
+    this.setState({
+      artistName: '',
+    });
   };
 
   render() {
-    // const { artistName } = this.state;
-    const { onInputChange, artistName } = this.props;
-    const isDisabled = artistName.length < 2;
+    const { artistName, isDisabled } = this.state;
 
     return (
       <div data-testid="page-search">
@@ -23,7 +40,7 @@ export default class Search extends Component {
               placeholder="Nome do Artista"
               name="artistName"
               value={ artistName }
-              onChange={ onInputChange }
+              onChange={ this.onInputChange }
             />
           </label>
 
@@ -33,7 +50,7 @@ export default class Search extends Component {
             disabled={ isDisabled }
             onClick={ this.btnClicked }
           >
-            Procurar
+            Pesquisar
           </button>
         </form>
       </div>
@@ -41,7 +58,7 @@ export default class Search extends Component {
   }
 }
 
-Search.propTypes = {
-  artistName: PropType.string,
-  onInputChange: PropType.func,
-}.isRequired;
+// Search.propTypes = {
+//   artistName: PropType.string,
+//   onInputChange: PropType.func,
+// }.isRequired;
