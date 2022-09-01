@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import PropType from 'prop-types';
 import { createUser } from '../services/userAPI';
 import Carregando from './Carregando';
 
@@ -7,23 +8,13 @@ export default class Login extends Component {
   constructor() {
     super();
     this.state = {
-      userName: '',
-      isDisabled: true,
       isLoading: false,
       redirect: false,
     };
   }
 
-  onInputNameChange = ({ target }) => {
-    const { name, value } = target;
-    this.setState({
-      [name]: value,
-      isDisabled: value.length <= 2,
-    });
-  };
-
   btnClicked = () => {
-    const { userName } = this.state;
+    const { userName } = this.props;
     this.setState({
       isLoading: true,
     }, async () => {
@@ -36,7 +27,13 @@ export default class Login extends Component {
   };
 
   render() {
-    const { userName, isDisabled, isLoading, redirect } = this.state;
+    const { redirect, isLoading } = this.state;
+
+    const {
+      userName,
+      isDisabled,
+      onInputChange,
+    } = this.props;
 
     return (
       redirect ? <Redirect to="/search" />
@@ -53,7 +50,7 @@ export default class Login extends Component {
                       placeholder="Digite seu nome"
                       name="userName"
                       value={ userName }
-                      onChange={ this.onInputNameChange }
+                      onChange={ onInputChange }
                     />
                   </label>
                   <button
@@ -71,3 +68,9 @@ export default class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  userName: PropType.string,
+  isDisabled: PropType.bool,
+  onInputChange: PropType.func,
+}.isRequired;
