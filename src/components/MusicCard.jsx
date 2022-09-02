@@ -8,10 +8,18 @@ export default class MusicCard extends React.Component {
     super();
 
     this.state = {
-      // favoriteSongs: [],
+
       isLoading: false,
       isChecked: false,
     };
+  }
+
+  componentDidMount() {
+    const { favoriteSongs, trackId } = this.props;
+    // console.log(favoriteSongs);
+    const checkeMusic = favoriteSongs.find((item) => item.trackId === trackId);
+    // console.log(checkeMusic);
+    this.setState({ isChecked: checkeMusic });
   }
 
   checkFavorite = ({ target }) => {
@@ -24,12 +32,13 @@ export default class MusicCard extends React.Component {
   };
 
   addFavoritesSong = () => {
-    const { allData } = this.props;
+    const { songData } = this.props;
+    // console.log(songData);
     // this.checkFavorite();
     this.setState(
       { isLoading: true },
       async () => {
-        await addSong(allData);
+        await addSong(songData);
         this.setState({
           isLoading: false,
           // favoriteSongs: allData,
@@ -40,7 +49,7 @@ export default class MusicCard extends React.Component {
 
   render() {
     const { previewUrl, trackName, trackId } = this.props;
-    const { isLoading, isChecked } = this.state;
+    const { isLoading, isChecked, sonsFavoritos } = this.state;
 
     if (isLoading) {
       return <Carregando />;
