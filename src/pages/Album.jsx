@@ -8,7 +8,8 @@ export default class Album extends Component {
   constructor() {
     super();
     this.state = {
-      data: [],
+      allData: [],
+      songsData: [],
     };
   }
 
@@ -19,26 +20,31 @@ export default class Album extends Component {
 
   fetchGetMusics = async (id) => {
     const response = await getMusics(id);
+    // console.log(response);
     this.setState({
       artistName: response[0].artistName,
       albumName: response[0].collectionName,
-      data: response.filter((item, index) => (index !== 0)),
+      songsData: response.filter((item, index) => (index !== 0)),
+      allData: response,
     });
   };
 
   render() {
-    const { data, artistName, albumName } = this.state;
+    const { songsData, allData, artistName, albumName } = this.state;
     return (
       <div data-testid="page-album">
         <Header />
         <h2 data-testid="album-name">{ albumName }</h2>
         <h3 data-testid="artist-name">{ artistName }</h3>
         {
-          data.map((item) => (
+          songsData.map((item) => (
             <MusicCard
               key={ item.trackId }
+              songsData={ item }
+              allData={ allData }
               previewUrl={ item.previewUrl }
               trackName={ item.trackName }
+              trackId={ item.trackId }
             />
           ))
         }
