@@ -49,7 +49,7 @@ export default class MusicCard extends React.Component {
 
   render() {
     const { previewUrl, trackName, trackId } = this.props;
-    const { isLoading, isChecked, sonsFavoritos } = this.state;
+    const { isLoading, isChecked } = this.state;
 
     if (isLoading) {
       return <Carregando />;
