@@ -1,6 +1,6 @@
 import React from 'react';
 import PropType from 'prop-types';
-import { addSong } from '../services/favoriteSongsAPI';
+import { addSong, removeSong } from '../services/favoriteSongsAPI';
 import Carregando from '../pages/Carregando';
 
 export default class MusicCard extends React.Component {
@@ -8,7 +8,6 @@ export default class MusicCard extends React.Component {
     super();
 
     this.state = {
-
       isLoading: false,
       isChecked: false,
     };
@@ -22,11 +21,19 @@ export default class MusicCard extends React.Component {
     this.setState({ isChecked: checkeMusic });
   }
 
-  checkFavorite = ({ target }) => {
-    // console.log(target);
+  checkFavorite = (event) => {
+    event.preventDefault();
+    const { target } = event;
+    // console.log(target.check);
     const check = target.checked;
-    if (target.checked) {
+    // console.log(check);
+    if (check) {
+      // console.log('entrou no if', target.checked);
       this.addFavoritesSong();
+      this.setState({ isChecked: check });
+    } else {
+      // console.log('entrou no else', target.checked);
+      this.removeFavoriteSong();
       this.setState({ isChecked: check });
     }
   };
@@ -39,6 +46,20 @@ export default class MusicCard extends React.Component {
       { isLoading: true },
       async () => {
         await addSong(songData);
+        this.setState({
+          isLoading: false,
+          // favoriteSongs: allData,
+        });
+      },
+    );
+  };
+
+  removeFavoriteSong = () => {
+    const { songData } = this.props;
+    this.setState(
+      { isLoading: true },
+      async () => {
+        await removeSong(songData);
         this.setState({
           isLoading: false,
           // favoriteSongs: allData,
